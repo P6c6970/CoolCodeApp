@@ -1,0 +1,156 @@
+ScreenManager:
+    Screen:
+        name: 'main'
+        BoxLayout:
+            orientation:'vertical'
+
+            MDToolbar:
+                id: toolbar
+                title: 'Главная'
+                md_bg_color: .2, .2, .2, 1
+                specific_text_color: .59, .7, .14, 1
+
+            MDBottomNavigation:
+                panel_color: .2, .2, .2, 1
+                #text_color_normal: 0, 0, 0, 1
+                text_color_active: .59, .7, .14, 1
+
+                MDBottomNavigationItem:
+                    name: 'screen 1'
+                    text: 'Главная'
+                    icon: 'snake'
+                    on_tab_release: toolbar.title = self.text
+
+                    MDCard:
+                        line_color: .59, .7, .14, 1
+                        size_hint: 0.9, 0.6
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+                        MDLabel:
+                            font_size: dp(25)
+                            font_name: 'data/Neucha.ttf'
+                            text: 'Это приложение создано как дополнение к сайту pavellip.pythonanywhere.com его функционал ограничен по сравнению с сайтом, но вы можете читать статьи и смотреть тексты уровней'
+                            halign: 'center'
+                            theme_text_color: "Custom"
+                            text_color: .59, .7, .14, 1
+
+                MDBottomNavigationItem:
+                    name: 'screen 2'
+                    text: 'Статьи'
+                    icon: 'book-open'
+                    on_tab_release: toolbar.title = self.text
+
+                    ScrollView:
+                        do_scroll_x: False
+                        padding: dp(20)
+                        spacing: dp(10)
+                        MDList:
+                            id: box
+
+
+
+
+                MDBottomNavigationItem:
+                    name: 'screen 3'
+                    text: 'Игра'
+                    icon: 'controller-classic'
+                    on_tab_release: toolbar.title = self.text
+
+                    MDCard:
+                        line_color: .59, .7, .14, 1
+                        size_hint: 0.9, 0.6
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+                        MDLabel:
+                            font_size: dp(25)
+                            font_name: 'data/Neucha.ttf'
+                            text: 'Здесь может когда-то будут ваши уровни'
+                            halign: 'center'
+                            theme_text_color: "Custom"
+                            text_color: .59, .7, .14, 1
+
+                MDBottomNavigationItem:
+                    name: 'screen_4'
+                    text: 'Профиль'
+                    icon: 'account-box'
+                    on_tab_release: toolbar.title = self.text
+
+                    MDCard:
+                        line_color: .59, .7, .14, 1
+                        size_hint: 0.9, 0.6
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+                        MDLabel:
+                            id: text_profile
+                            font_size: dp(25)
+                            font_name: 'data/Neucha.ttf'
+                            text: 'Загрузка данных'
+                            halign: 'center'
+                            theme_text_color: "Custom"
+                            text_color: .59, .7, .14, 1
+
+    Screen:
+        name: 'login'
+        MDCard:
+            size_hint: 0.9, 0.7
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            line_color: .59, .7, .14, 1
+            elevation: dp(10)
+            padding: dp(20)
+            spacing: dp(25)
+            orientation: 'vertical'
+
+            MDLabel:
+                id: welcome_label
+                text: "Авторизация"
+                font_size: dp(38)
+                font_name: 'data/Neucha.ttf'
+                halign: 'center'
+                size_hint_y: None
+                height: self.texture_size[1]
+                padding_y: dp(15)
+                theme_text_color: "Custom"
+                text_color: .59, .7, .14, 1
+
+            MDTextFieldRound:
+                id: user
+                hint_text: "логин"
+                icon_right: "account"
+                size_hint_x: 0.8
+                font_size: dp(20)
+                font_name: 'data/Neucha.ttf'
+                pos_hint: {"center_x": 0.5}
+
+            MDTextFieldRoundPas:
+                id: password
+                hint_text: "пароль"
+                icon_right: "eye-off"
+                size_hint_x: 0.8
+                font_size: dp(20)
+                pos_hint: {'center_x': 0.5}
+                password: True
+                password_mask: '•'
+                font_name: 'data/Neucha.ttf'
+
+            MDSpinner:
+                id: spiner
+                size_hint: None, None
+                size: dp(46), dp(46)
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                active: False
+
+            MDRoundFlatButton:
+                text: "Вход"
+                font_size: dp(22)
+                font_name: 'data/Neucha.ttf'
+                pos_hint: {"center_x": 0.5}
+                on_press: app.logger()
+                md_bg_color: .59, .7, .14, 1
+                text_color: 0, 0, 0, 1
+                line_color: .48, .57, .11, 1
+
+
+
+            Widget:
+                size_hint_y: None
+                height: dp(14)
