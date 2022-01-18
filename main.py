@@ -1,6 +1,9 @@
 from kivy.lang import Builder
 from kivymd.app import MDApp
 from kivy.storage.jsonstore import JsonStore
+from kivymd.uix.button import MDFlatButton
+from kivymd.uix.dialog import MDDialog
+
 import elements
 # from kivy.metrics import dp, sp
 import api
@@ -9,11 +12,13 @@ import threading
 
 
 class MainApp(MDApp):
+    dialog = None
+    store = JsonStore("date.json")
+    api = api.Api()
+
     def build(self):
         # Window.size = (324, 650)
         # python main.py --size=360x740 --dpi=529
-        self.store = JsonStore("date.json")
-        self.api = api.Api()
         self.load()
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "BlueGray"
@@ -25,9 +30,11 @@ class MainApp(MDApp):
             self.root.current = "login"
         else:
             data = self.api.get_account("self")
-            if data.get_status() != "Ok":
+            if data.get_status() == "Error code":
                 self.root.current = "login"
-            else:
+            elif data.get_status() == "Error connect":
+                self.root.current = "error_connect"
+            elif data.get_status() == "Ok":
                 data = data.get()
                 self.root.ids.text_profile.text = f"id: {data['id']}\nЛогин: {data['username']}\nEmail: {data['email']}\nУровней пройдено {data['lvl']} из {data['lvls']}"
                 data = self.api.get_posts()
@@ -40,17 +47,35 @@ class MainApp(MDApp):
                             on_release=self.open_post)
                     )
 
-    def open_post(self, onelinelistitem):
-        name = onelinelistitem.text[onelinelistitem.text.index(']') + 1:onelinelistitem.text.index('[', 1)]
+    def check_connect(self):
+        data = self.api.get_account("self")
+        if data.get_status() == "Error code":
+            self.root.current = "login"
+        elif data.get_status() == "Ok":
+            data = data.get()
+            self.root.ids.text_profile.text = f"id: {data['id']}\nЛогин: {data['username']}\nEmail: {data['email']}\nУровней пройдено {data['lvl']} из {data['lvls']}"
+            self.root.current = "main"
+
+    def load_post(self, name):
         data = self.api.get_posts()
         slug = ""
-        for i in data.get():
-            if i['title'] == name:
-                slug = i['slug']
-        data = self.api.get_post(slug)
+        if data.get_status() == "Error code":
+            self.root.current = "login"
+        elif data.get_status() == "Error connect":
+            self.root.current = "error_connect"
+        elif data.get_status() == "Ok":
+            for i in data.get():
+                if i['title'] == name:
+                    slug = i['slug']
+            data = self.api.get_post(slug)
+            self.root.ids.post.text = data.get()["body"]
+
+    def open_post(self, onelinelistitem):
+        name = onelinelistitem.text[onelinelistitem.text.index(']') + 1:onelinelistitem.text.index('[', 1)]
         self.root.current = "post_screen"
+        self.root.ids.post.text = "Загрузка..."
         self.root.ids.post_name.title = name
-        self.root.ids.post.text = data.get()["body"]
+        threading.Thread(target=self.load_post, args=(name, )).start()
 
     def auth(self):
         data = self.api.login(self.root.ids.user.text, self.root.ids.password.text)
@@ -64,6 +89,13 @@ class MainApp(MDApp):
             else:
                 data = data.get()
                 self.root.ids.text_profile.text = f"id: {data['id']}\nЛогин: {data['username']}\nEmail: {data['email']}\nУровней пройдено {data['lvl']} из {data['lvls']}"
+                data = self.api.get_posts()
+                for i in data.get():
+                    self.root.ids.box.add_widget(
+                        elements.OneLineListItemAligned(
+                            text=f"[font=data/Neucha.ttf]{i['title']}[/font]",
+                            on_release=self.open_post)
+                    )
         elif data.get_status() == "Error connect":
             self.root.ids.welcome_label.text = "Нет соединения с сервером"
         else:
@@ -80,8 +112,32 @@ class MainApp(MDApp):
             if self.root.current == "post_screen":
                 self.root.current = "main"
             else:
-                self.stop()
+                if not self.dialog:
+                    self.dialog = MDDialog(
+                        text="Хотите выйти?",
+                        buttons=[
+                            MDFlatButton(
+                                text="Хочу",
+                                theme_text_color="Custom",
+                                text_color=(.59, .7, .14, 1),
+                                on_press=self.to_exit
+                            ),
+                            MDFlatButton(
+                                text="Нет",
+                                theme_text_color="Custom",
+                                text_color=(.59, .7, .14, 1),
+                                on_press=self.to_back
+                            )
+                        ],
+                    )
+                self.dialog.open()
             return True
+
+    def to_exit(self, inst):
+        self.stop()
+
+    def to_back(self, inst):
+        self.dialog.dismiss()
 
     def load(self):
         try:

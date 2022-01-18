@@ -44,7 +44,7 @@ requirements=python3,kivy,requests,urllib3,chardet,idna,pip,openssl,android, htt
 # requirements.source.kivy = ../../kivy
 
 # (str) Presplash of the application
-#presplash.filename = %(source.dir)s/data/InfImg.png
+presplash.filename = %(source.dir)s/data/load.png
 
 # (str) Icon of the application
 icon.filename = %(source.dir)s/data/InfImg.png

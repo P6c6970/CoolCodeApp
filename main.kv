@@ -29,7 +29,7 @@ ScreenManager:
                         MDLabel:
                             font_size: dp(25)
                             font_name: 'data/Neucha.ttf'
-                            text: 'Это приложение создано как дополнение к сайту pavellip.pythonanywhere.com его функционал ограничен по сравнению с сайтом, но вы можете читать статьи и смотреть тексты уровней'
+                            text: 'Это приложение создано как дополнение к сайту pavellip.pythonanywhere.com его функционал ограничен по сравнению с сайтом, вы можете читать упрошенные версии статей'
                             halign: 'center'
                             theme_text_color: "Custom"
                             text_color: .59, .7, .14, 1
@@ -182,7 +182,7 @@ ScreenManager:
                     size_hint_y: None
                     height: self.texture_size[1]
                     text_size: self.width, None
-                    text: 'text'
+                    text: 'Загрузка...'
                     font_size: dp(25)
                     font_name: 'data/Neucha.ttf'
                     color: .59, .7, .14, 1
@@ -195,6 +195,52 @@ ScreenManager:
                 #    halign: 'center'
                 #    theme_text_color: "Custom"
                 #    text_color: .59, .7, .14, 1
+
+    Screen:
+        name: "error_connect"
+
+        MDCard:
+            size_hint: 0.9, 0.7
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            line_color: .59, .7, .14, 1
+            orientation:'vertical'
+            spacing: dp(25)
+
+            MDLabel:
+                text: "Отсутствует соединение с сервером"
+                font_size: dp(38)
+                font_name: 'data/Neucha.ttf'
+                halign: 'center'
+                size_hint_y: None
+                height: self.texture_size[1]
+                padding_y: dp(15)
+                theme_text_color: "Custom"
+                text_color: .59, .7, .14, 1
+
+            MDIconButton:
+                icon: 'wifi-off'
+                pos_hint: {"center_x": 0.5}
+                #font_size: dp(90)
+                theme_text_color: "Custom"
+                #text_color: .59, .7, .14, 1
+                md_bg_color: .502, .502, .502, 1
+                icon_size: dp(60)
+                on_press: app.check_connect()
+
+            MDLabel:
+                text: "Нажмите на знак, чтобы обновить"
+                font_size: dp(28)
+                font_name: 'data/Neucha.ttf'
+                halign: 'center'
+                size_hint_y: None
+                height: self.texture_size[1]
+                padding_y: dp(15)
+                theme_text_color: "Custom"
+                text_color: .59, .7, .14, 1
+
+            Widget:
+                size_hint_y: None
+                height: dp(40)
 
 <OneLineListItemAligned>:
     theme_text_color: "Custom"
