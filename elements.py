@@ -1,4 +1,7 @@
 from kivy.properties import BooleanProperty
+from kivymd.uix.card import MDCard
+from kivymd.uix.label import MDLabel
+from kivymd.uix.list import OneLineListItem
 from kivymd.uix.textfield import MDTextFieldRound
 
 
@@ -26,3 +29,9 @@ class MDTextFieldRoundPas(MDTextFieldRound):
                     cursor = self.cursor
                     self.cursor = (0, 0)
         return super(MDTextFieldRound, self).on_touch_down(touch)
+
+
+class OneLineListItemAligned(OneLineListItem):
+    def __init__(self, **kwargs):
+        super(OneLineListItemAligned, self).__init__(**kwargs)
+        self.ids._lbl_primary.halign = "center"

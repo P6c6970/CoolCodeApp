@@ -59,7 +59,6 @@ class Api:
             url = 'http://pavellip.pythonanywhere.com/api/pages/'
             head = {'Authorization': f'Token {self.token}'}
             response = requests.get(url, headers=head, params={"slug": name})
-            print(response.text)
             if response.status_code == 200:
                 return Error("Ok", response.json())
             return Error("Error code")

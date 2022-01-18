@@ -1,14 +1,12 @@
 from kivy.lang import Builder
 from kivymd.app import MDApp
 from kivy.storage.jsonstore import JsonStore
-from kivymd.uix.card import MDCard
-from kivymd.uix.list import OneLineListItem
-
 import elements
 # from kivy.metrics import dp, sp
 import api
-# from kivy.core.window import Window
+from kivy.core.window import Window
 import threading
+
 
 class MainApp(MDApp):
     def build(self):
@@ -22,6 +20,7 @@ class MainApp(MDApp):
         return Builder.load_file("main.kv")
 
     def on_start(self):
+        Window.bind(on_keyboard=self.android_back_click)
         if self.api.token == "":
             self.root.current = "login"
         else:
@@ -32,14 +31,26 @@ class MainApp(MDApp):
                 data = data.get()
                 self.root.ids.text_profile.text = f"id: {data['id']}\nЛогин: {data['username']}\nEmail: {data['email']}\nУровней пройдено {data['lvl']} из {data['lvls']}"
                 data = self.api.get_posts()
-                #self.root.ids.box.clear_widgets()
+                # self.root.ids.box.clear_widgets()
                 for i in data.get():
-                    #print(i["title"])
                     self.root.ids.box.add_widget(
-                        OneLineListItem(text=i["title"], theme_text_color="Custom", text_color=(.59, .7, .14, 1))
+                        elements.OneLineListItemAligned(
+                            #text=f"[font=data/Neucha.ttf][size=50]{i['title']}[/size][/font]",
+                            text=f"[font=data/Neucha.ttf]{i['title']}[/font]",
+                            on_release=self.open_post)
                     )
 
-
+    def open_post(self, onelinelistitem):
+        name = onelinelistitem.text[onelinelistitem.text.index(']') + 1:onelinelistitem.text.index('[', 1)]
+        data = self.api.get_posts()
+        slug = ""
+        for i in data.get():
+            if i['title'] == name:
+                slug = i['slug']
+        data = self.api.get_post(slug)
+        self.root.current = "post_screen"
+        self.root.ids.post_name.title = name
+        self.root.ids.post.text = data.get()["body"]
 
     def auth(self):
         data = self.api.login(self.root.ids.user.text, self.root.ids.password.text)
@@ -63,6 +74,14 @@ class MainApp(MDApp):
         # "root", "ZX09cv87"
         self.root.ids.spiner.active = True
         threading.Thread(target=self.auth).start()
+
+    def android_back_click(self, window, key, *largs):
+        if key == 27:
+            if self.root.current == "post_screen":
+                self.root.current = "main"
+            else:
+                self.stop()
+            return True
 
     def load(self):
         try:

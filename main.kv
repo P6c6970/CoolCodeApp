@@ -41,14 +41,12 @@ ScreenManager:
                     on_tab_release: toolbar.title = self.text
 
                     ScrollView:
+                        id: list
                         do_scroll_x: False
                         padding: dp(20)
                         spacing: dp(10)
                         MDList:
                             id: box
-
-
-
 
                 MDBottomNavigationItem:
                     name: 'screen 3'
@@ -149,8 +147,55 @@ ScreenManager:
                 text_color: 0, 0, 0, 1
                 line_color: .48, .57, .11, 1
 
-
-
             Widget:
                 size_hint_y: None
                 height: dp(14)
+    Screen:
+        name: "post_screen"
+
+        BoxLayout:
+            orientation:'vertical'
+
+            MDToolbar:
+                id: post_name
+                title: 'Статья'
+                md_bg_color: .2, .2, .2, 1
+                specific_text_color: .59, .7, .14, 1
+
+            ScrollView:
+                id: scroll
+                scroll_type: ['bars', 'content']
+                bar_width: dp(10)
+            #    CodeInput:
+            #        id: post
+            #        text: "загрузка"
+                Label:
+                    id: post
+                    #canvas.before:
+                    #    Color:
+                    #        rgba: (0.8, 0.2, 0.5, 1)
+                    #    RoundedRectangle:
+                    #        radius: [100]
+                    #        pos:self.pos
+                    #        size:self.size
+
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    text: 'text'
+                    font_size: dp(25)
+                    font_name: 'data/Neucha.ttf'
+                    color: .59, .7, .14, 1
+                    padding: dp(35), dp(35)
+                #MDLabel:
+                #    id: post
+                #    font_size: dp(25)
+                #    font_name: 'data/Neucha.ttf'
+                #    text: 'Загрузка статьи'
+                #    halign: 'center'
+                #    theme_text_color: "Custom"
+                #    text_color: .59, .7, .14, 1
+
+<OneLineListItemAligned>:
+    theme_text_color: "Custom"
+    text_color: .59, .7, .14, 1
