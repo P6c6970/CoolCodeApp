@@ -17,9 +17,10 @@ ScreenManager:
 
                 MDBottomNavigationItem:
                     name: 'screen 1'
-                    text: 'Главная'
+                    #text: 'Главная'
                     icon: 'snake'
-                    on_tab_release: toolbar.title = self.text
+                    #on_tab_release: toolbar.title = self.text
+                    on_tab_release: toolbar.title = 'Главная'
 
                     MDCard:
                         line_color: .59, .7, .14, 1
@@ -36,9 +37,9 @@ ScreenManager:
 
                 MDBottomNavigationItem:
                     name: 'screen 2'
-                    text: 'Статьи'
+                    #text: 'Статьи'
                     icon: 'book-open'
-                    on_tab_release: toolbar.title = self.text
+                    on_tab_release: toolbar.title = 'Статьи'
 
                     ScrollView:
                         id: list
@@ -50,9 +51,9 @@ ScreenManager:
 
                 MDBottomNavigationItem:
                     name: 'screen 3'
-                    text: 'Игра'
-                    icon: 'controller-classic'
-                    on_tab_release: toolbar.title = self.text
+                    #text: 'Инструменты'
+                    icon: 'tools'
+                    on_tab_release: toolbar.title = 'Инструменты'
 
                     MDCard:
                         line_color: .59, .7, .14, 1
@@ -62,30 +63,91 @@ ScreenManager:
                         MDLabel:
                             font_size: dp(25)
                             font_name: 'data/Neucha.ttf'
-                            text: 'Здесь может когда-то будут ваши уровни'
+                            text: 'Здесь может будут инструменты, а может и не будут'
                             halign: 'center'
                             theme_text_color: "Custom"
                             text_color: .59, .7, .14, 1
 
                 MDBottomNavigationItem:
-                    name: 'screen_4'
-                    text: 'Профиль'
-                    icon: 'account-box'
-                    on_tab_release: toolbar.title = self.text
+                    name: 'screen 4'
+                    #text: 'Игра'
+                    icon: 'controller-classic'
+                    on_tab_release: toolbar.title = 'Игра'
 
                     MDCard:
                         line_color: .59, .7, .14, 1
                         size_hint: 0.9, 0.6
                         pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        padding: dp(20)
 
                         MDLabel:
-                            id: text_profile
                             font_size: dp(25)
                             font_name: 'data/Neucha.ttf'
-                            text: 'Загрузка данных'
+                            text: 'Здесь может когда-то будут ваши уровни или подсказки к ним'
                             halign: 'center'
                             theme_text_color: "Custom"
                             text_color: .59, .7, .14, 1
+
+                MDBottomNavigationItem:
+                    name: 'screen 5'
+                    #text: 'Профиль'
+                    icon: 'account-box'
+                    on_tab_release: toolbar.title = 'Профиль'
+
+                    MDCard:
+                        line_color: .59, .7, .14, 1
+                        size_hint: 0.9, 0.6
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        #padding: dp(40)
+                        #spacing: dp(40)
+                        BoxLayout:
+                            orientation:'vertical'
+                            size_hint: 1, .45
+                            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                            MDLabel:
+                                id: text_profile_1
+                                font_size: dp(25)
+                                font_name: 'data/Neucha.ttf'
+                                text: 'Загрузка данных'
+                                halign: 'center'
+                                theme_text_color: "Custom"
+                                text_color: .59, .7, .14, 1
+                                #pos_hint: {"center_y": 1}
+                                size_hint: 1, 2.4
+                            BoxLayout:
+                                size_hint: 1, .2
+                                orientation:'horizontal'
+                                #size_y: dp(25)
+                                #size_hint_y: None
+                                MDLabel:
+                                    id: text_profile_2
+                                    font_size: dp(25)
+                                    font_name: 'data/Neucha.ttf'
+                                    text: 'Загрузка данных'
+                                    halign: "right"
+                                    theme_text_color: "Custom"
+                                    text_color: .59, .7, .14, 1
+                                    size_hint: 2, 1
+                                Image:
+                                    source: 'data/bitcoin.png'
+                                    allow_stretch: True
+                                    size_hint: 0.5, 3.5
+                                    pos_hint: {"x": 1, "center_y": 0.5}
+                                Widget:
+                                    size_hint_x: 1
+
+
+                            MDLabel:
+                                id: text_profile_3
+                                font_size: dp(25)
+                                font_name: 'data/Neucha.ttf'
+                                text: 'Загрузка данных'
+                                halign: 'center'
+                                theme_text_color: "Custom"
+                                text_color: .59, .7, .14, 1
+                                #pos_hint: {"center_y": 0}
+                                size_hint: 1, 1
+
 
     Screen:
         name: 'login'
@@ -165,7 +227,7 @@ ScreenManager:
             ScrollView:
                 id: scroll
                 scroll_type: ['bars', 'content']
-                bar_width: dp(10)
+                #bar_width: dp(10)
             #    CodeInput:
             #        id: post
             #        text: "загрузка"
@@ -220,11 +282,8 @@ ScreenManager:
             MDIconButton:
                 icon: 'wifi-off'
                 pos_hint: {"center_x": 0.5}
-                #font_size: dp(90)
-                theme_text_color: "Custom"
-                #text_color: .59, .7, .14, 1
                 md_bg_color: .502, .502, .502, 1
-                icon_size: dp(60)
+                icon_size: dp(30)
                 on_press: app.check_connect()
 
             MDLabel:

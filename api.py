@@ -11,7 +11,7 @@ class Api:
 
     def login(self, username, password):  # return true if get token
         try:
-            url = 'http://pavellip.pythonanywhere.com/api/account/token/login'
+            url = 'http://pavellip.pythonanywhere.com/api/v1/account/token/login'
             response = requests.post(url, data={"username": username, "password": password})
             if response.status_code == 200:
                 self.token = response.json()["auth_token"]
@@ -22,7 +22,7 @@ class Api:
 
     def get_account(self, id):  # return {'id', 'username', 'email', 'lvl', 'lvls'}
         try:
-            url = 'http://pavellip.pythonanywhere.com/api/'
+            url = 'http://pavellip.pythonanywhere.com/api/v1/'
             head = {'Authorization': f'Token {self.token}'}
             response = requests.get(url, headers=head, params={"id": id})
             if response.status_code == 200:
@@ -33,7 +33,7 @@ class Api:
 
     def logout(self):
         try:
-            url = 'http://pavellip.pythonanywhere.com/api/account/token/logout'
+            url = 'http://pavellip.pythonanywhere.com/api/v1/account/token/logout'
             head = {'Authorization': f'Token {self.token}'}
             response = requests.post(url, headers=head)
             if response.status_code == 204:
@@ -45,7 +45,7 @@ class Api:
 
     def get_posts(self):
         try:
-            url = 'http://pavellip.pythonanywhere.com/api/pages/'
+            url = 'http://pavellip.pythonanywhere.com/api/v1/pages/'
             head = {'Authorization': f'Token {self.token}'}
             response = requests.get(url, headers=head)
             if response.status_code == 200:
@@ -56,7 +56,7 @@ class Api:
 
     def get_post(self, name):
         try:
-            url = 'http://pavellip.pythonanywhere.com/api/pages/'
+            url = 'http://pavellip.pythonanywhere.com/api/v1/pages/'
             head = {'Authorization': f'Token {self.token}'}
             response = requests.get(url, headers=head, params={"slug": name})
             if response.status_code == 200:

@@ -36,7 +36,9 @@ class MainApp(MDApp):
                 self.root.current = "error_connect"
             elif data.get_status() == "Ok":
                 data = data.get()
-                self.root.ids.text_profile.text = f"id: {data['id']}\nЛогин: {data['username']}\nEmail: {data['email']}\nУровней пройдено {data['lvl']} из {data['lvls']}"
+                self.root.ids.text_profile_1.text = f"id: {data['id']}\nЛогин: {data['username']}\nEmail: {data['email']}"
+                self.root.ids.text_profile_2.text = f"Монеты: {data['money']}"
+                self.root.ids.text_profile_3.text = f"Уровней пройдено {data['lvl']} из {data['lvls']}"
                 data = self.api.get_posts()
                 # self.root.ids.box.clear_widgets()
                 for i in data.get():
@@ -53,7 +55,8 @@ class MainApp(MDApp):
             self.root.current = "login"
         elif data.get_status() == "Ok":
             data = data.get()
-            self.root.ids.text_profile.text = f"id: {data['id']}\nЛогин: {data['username']}\nEmail: {data['email']}\nУровней пройдено {data['lvl']} из {data['lvls']}"
+            self.root.ids.text_profile_11.text = f"id: {data['id']}\nЛогин: {data['username']}\nEmail: {data['email']}\nМонеты: {data['money']}"
+            self.root.ids.text_profile_2.text = f"Уровней пройдено {data['lvl']} из {data['lvls']}"
             self.root.current = "main"
 
     def load_post(self, name):
@@ -88,7 +91,8 @@ class MainApp(MDApp):
                 self.root.current = "login"
             else:
                 data = data.get()
-                self.root.ids.text_profile.text = f"id: {data['id']}\nЛогин: {data['username']}\nEmail: {data['email']}\nУровней пройдено {data['lvl']} из {data['lvls']}"
+                self.root.ids.text_profile_11.text = f"id: {data['id']}\nЛогин: {data['username']}\nEmail: {data['email']}\nМонеты: {data['money']}"
+                self.root.ids.text_profile_2.text = f"Уровней пройдено {data['lvl']} из {data['lvls']}"
                 data = self.api.get_posts()
                 for i in data.get():
                     self.root.ids.box.add_widget(
