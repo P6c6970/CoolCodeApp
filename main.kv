@@ -7,13 +7,13 @@ ScreenManager:
             MDToolbar:
                 id: toolbar
                 title: 'Главная'
-                md_bg_color: .2, .2, .2, 1
-                specific_text_color: .59, .7, .14, 1
+                md_bg_color: app.theme_cls.bg_light if app.theme_cls.theme_style == "Dark" else app.theme_cls.bg_darkest
+                specific_text_color: (.59, .7, .14, 1) if app.theme_cls.theme_style == "Dark" else (.48, .57, .11, 1)
 
             MDBottomNavigation:
-                panel_color: .2, .2, .2, 1
+                panel_color: app.theme_cls.bg_light if app.theme_cls.theme_style == "Dark" else app.theme_cls.bg_darkest
                 #text_color_normal: 0, 0, 0, 1
-                text_color_active: .59, .7, .14, 1
+                text_color_active: (.59, .7, .14, 1) if app.theme_cls.theme_style == "Dark" else (.48, .57, .11, 1)
 
                 MDBottomNavigationItem:
                     name: 'screen 1'
@@ -22,10 +22,8 @@ ScreenManager:
                     #on_tab_release: toolbar.title = self.text
                     on_tab_release: toolbar.title = 'Главная'
 
-                    MDCard:
-                        line_color: .59, .7, .14, 1
+                    MyMDCard:
                         size_hint: 0.9, 0.6
-                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
 
                         MDLabel:
                             font_size: dp(25)
@@ -33,7 +31,7 @@ ScreenManager:
                             text: 'Это приложение создано как дополнение к сайту pavellip.pythonanywhere.com его функционал ограничен по сравнению с сайтом, вы можете читать упрошенные версии статей'
                             halign: 'center'
                             theme_text_color: "Custom"
-                            text_color: .59, .7, .14, 1
+                            text_color: (.59, .7, .14, 1) if app.theme_cls.theme_style == "Dark" else (.48, .57, .11, 1)
 
                 MDBottomNavigationItem:
                     name: 'screen 2'
@@ -42,42 +40,21 @@ ScreenManager:
                     on_tab_release: toolbar.title = 'Статьи'
 
                     ScrollView:
-                        id: list
                         do_scroll_x: False
                         padding: dp(20)
                         spacing: dp(10)
                         MDList:
                             id: box
+                            spacing: 5
 
                 MDBottomNavigationItem:
                     name: 'screen 3'
-                    #text: 'Инструменты'
-                    icon: 'tools'
-                    on_tab_release: toolbar.title = 'Инструменты'
-
-                    MDCard:
-                        line_color: .59, .7, .14, 1
-                        size_hint: 0.9, 0.6
-                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
-
-                        MDLabel:
-                            font_size: dp(25)
-                            font_name: 'data/Neucha.ttf'
-                            text: 'Здесь может будут инструменты, а может и не будут'
-                            halign: 'center'
-                            theme_text_color: "Custom"
-                            text_color: .59, .7, .14, 1
-
-                MDBottomNavigationItem:
-                    name: 'screen 4'
                     #text: 'Игра'
                     icon: 'controller-classic'
                     on_tab_release: toolbar.title = 'Игра'
 
-                    MDCard:
-                        line_color: .59, .7, .14, 1
+                    MyMDCard:
                         size_hint: 0.9, 0.6
-                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
                         padding: dp(20)
 
                         MDLabel:
@@ -86,18 +63,16 @@ ScreenManager:
                             text: 'Здесь может когда-то будут ваши уровни или подсказки к ним'
                             halign: 'center'
                             theme_text_color: "Custom"
-                            text_color: .59, .7, .14, 1
+                            text_color: (.59, .7, .14, 1) if app.theme_cls.theme_style == "Dark" else (.48, .57, .11, 1)
 
                 MDBottomNavigationItem:
-                    name: 'screen 5'
+                    name: 'screen 4'
                     #text: 'Профиль'
                     icon: 'account-box'
                     on_tab_release: toolbar.title = 'Профиль'
 
-                    MDCard:
-                        line_color: .59, .7, .14, 1
+                    MyMDCard:
                         size_hint: 0.9, 0.6
-                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
                         #padding: dp(40)
                         #spacing: dp(40)
                         BoxLayout:
@@ -111,14 +86,16 @@ ScreenManager:
                                 text: 'Загрузка данных'
                                 halign: 'center'
                                 theme_text_color: "Custom"
-                                text_color: .59, .7, .14, 1
+                                text_color: (.59, .7, .14, 1) if app.theme_cls.theme_style == "Dark" else (.48, .57, .11, 1)
                                 #pos_hint: {"center_y": 1}
                                 size_hint: 1, 2.4
+
                             BoxLayout:
                                 size_hint: 1, .2
                                 orientation:'horizontal'
                                 #size_y: dp(25)
                                 #size_hint_y: None
+
                                 MDLabel:
                                     id: text_profile_2
                                     font_size: dp(25)
@@ -126,16 +103,17 @@ ScreenManager:
                                     text: 'Загрузка данных'
                                     halign: "right"
                                     theme_text_color: "Custom"
-                                    text_color: .59, .7, .14, 1
+                                    text_color: (.59, .7, .14, 1) if app.theme_cls.theme_style == "Dark" else (.48, .57, .11, 1)
                                     size_hint: 2, 1
+
                                 Image:
                                     source: 'data/bitcoin.png'
                                     allow_stretch: True
                                     size_hint: 0.5, 3.5
                                     pos_hint: {"x": 1, "center_y": 0.5}
+
                                 Widget:
                                     size_hint_x: 1
-
 
                             MDLabel:
                                 id: text_profile_3
@@ -144,17 +122,54 @@ ScreenManager:
                                 text: 'Загрузка данных'
                                 halign: 'center'
                                 theme_text_color: "Custom"
-                                text_color: .59, .7, .14, 1
+                                text_color: (.59, .7, .14, 1) if app.theme_cls.theme_style == "Dark" else (.48, .57, .11, 1)
                                 #pos_hint: {"center_y": 0}
                                 size_hint: 1, 1
+                MDBottomNavigationItem:
+                    name: 'screen 5'
+                    #text: 'Настройки'
+                    icon: 'tools'
+                    on_tab_release: toolbar.title = "Настройки"
 
+                    MyMDCard:
+                        size_hint: 0.9, 0.6
 
+                        BoxLayout:
+                            orientation:'vertical'
+                            #size_hint: 1, .45
+                            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+                            MDRoundFlatButton:
+                                text: "Сменить тему"
+                                font_size: dp(22)
+                                font_name: 'data/Neucha.ttf'
+                                pos_hint: {"center_x": 0.5}
+                                on_press: app.change_theme()
+                                md_bg_color: (.59, .7, .14, 1) if app.theme_cls.theme_style == "Dark" else (.48, .57, .11, 1)
+                                text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+                                line_color: .48, .57, .11, 1
+
+                            Widget:
+                                size_hint_y: None
+                                height: dp(40)
+
+                            MDRoundFlatButton:
+                                text: "Выход"
+                                font_size: dp(22)
+                                font_name: 'data/Neucha.ttf'
+                                pos_hint: {"center_x": 0.5}
+                                on_press: app.auth_exit(), box.clear_widgets()
+                                md_bg_color: (.59, .7, .14, 1) if app.theme_cls.theme_style == "Dark" else (.48, .57, .11, 1)
+                                text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+                                line_color: .48, .57, .11, 1
+
+                            Widget:
+                                size_hint_y: None
+                                height: dp(100)
     Screen:
         name: 'login'
-        MDCard:
+        MyMDCard:
             size_hint: 0.9, 0.7
-            pos_hint: {"center_x": 0.5, "center_y": 0.5}
-            line_color: .59, .7, .14, 1
             elevation: dp(10)
             padding: dp(20)
             spacing: dp(25)
@@ -170,7 +185,7 @@ ScreenManager:
                 height: self.texture_size[1]
                 padding_y: dp(15)
                 theme_text_color: "Custom"
-                text_color: .59, .7, .14, 1
+                text_color: (.59, .7, .14, 1) if app.theme_cls.theme_style == "Dark" else (.48, .57, .11, 1)
 
             MDTextFieldRound:
                 id: user
@@ -205,8 +220,8 @@ ScreenManager:
                 font_name: 'data/Neucha.ttf'
                 pos_hint: {"center_x": 0.5}
                 on_press: app.logger()
-                md_bg_color: .59, .7, .14, 1
-                text_color: 0, 0, 0, 1
+                md_bg_color: (.59, .7, .14, 1) if app.theme_cls.theme_style == "Dark" else (.48, .57, .11, 1)
+                text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
                 line_color: .48, .57, .11, 1
 
             Widget:
@@ -221,8 +236,8 @@ ScreenManager:
             MDToolbar:
                 id: post_name
                 title: 'Статья'
-                md_bg_color: .2, .2, .2, 1
-                specific_text_color: .59, .7, .14, 1
+                md_bg_color: app.theme_cls.bg_light if app.theme_cls.theme_style == "Dark" else app.theme_cls.bg_darkest
+                specific_text_color: (.59, .7, .14, 1) if app.theme_cls.theme_style == "Dark" else (.48, .57, .11, 1)
 
             ScrollView:
                 id: scroll
@@ -247,7 +262,7 @@ ScreenManager:
                     text: 'Загрузка...'
                     font_size: dp(25)
                     font_name: 'data/Neucha.ttf'
-                    color: .59, .7, .14, 1
+                    color: (.59, .7, .14, 1) if app.theme_cls.theme_style == "Dark" else (.48, .57, .11, 1)
                     padding: dp(35), dp(35)
                 #MDLabel:
                 #    id: post
@@ -256,15 +271,13 @@ ScreenManager:
                 #    text: 'Загрузка статьи'
                 #    halign: 'center'
                 #    theme_text_color: "Custom"
-                #    text_color: .59, .7, .14, 1
+                #    text_color: (.59, .7, .14, 1) if app.theme_cls.theme_style == "Dark" else (.48, .57, .11, 1)
 
     Screen:
         name: "error_connect"
 
-        MDCard:
+        MyMDCard:
             size_hint: 0.9, 0.7
-            pos_hint: {"center_x": 0.5, "center_y": 0.5}
-            line_color: .59, .7, .14, 1
             orientation:'vertical'
             spacing: dp(25)
 
@@ -277,7 +290,7 @@ ScreenManager:
                 height: self.texture_size[1]
                 padding_y: dp(15)
                 theme_text_color: "Custom"
-                text_color: .59, .7, .14, 1
+                text_color: (.59, .7, .14, 1) if app.theme_cls.theme_style == "Dark" else (.48, .57, .11, 1)
 
             MDIconButton:
                 icon: 'wifi-off'
@@ -295,12 +308,17 @@ ScreenManager:
                 height: self.texture_size[1]
                 padding_y: dp(15)
                 theme_text_color: "Custom"
-                text_color: .59, .7, .14, 1
+                text_color: (.59, .7, .14, 1) if app.theme_cls.theme_style == "Dark" else (.48, .57, .11, 1)
 
             Widget:
                 size_hint_y: None
-                height: dp(40)
+                height: dp(35)
 
 <OneLineListItemAligned>:
     theme_text_color: "Custom"
-    text_color: .59, .7, .14, 1
+    text_color: (.59, .7, .14, 1) if app.theme_cls.theme_style == "Dark" else (.48, .57, .11, 1)
+
+<MyMDCard>:
+    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+    line_color: (.59, .7, .14, 1) if app.theme_cls.theme_style == "Dark" else (.48, .57, .11, 1)
+    md_bg_color: app.theme_cls.bg_light if app.theme_cls.theme_style == "Dark" else app.theme_cls.bg_darkest

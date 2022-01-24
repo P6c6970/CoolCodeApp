@@ -35,3 +35,6 @@ class OneLineListItemAligned(OneLineListItem):
     def __init__(self, **kwargs):
         super(OneLineListItemAligned, self).__init__(**kwargs)
         self.ids._lbl_primary.halign = "center"
+
+class MyMDCard(MDCard):
+    pass
