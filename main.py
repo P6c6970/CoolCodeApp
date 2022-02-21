@@ -3,14 +3,14 @@ from kivymd.app import MDApp
 from kivy.storage.jsonstore import JsonStore
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
-from kivymd.uix.list import MDList
+# from kivymd.uix.list import MDList
 
 import elements
 # from kivy.metrics import dp, sp
 import api
 from kivy.core.window import Window
 import threading
-
+from requests import ConnectionError
 
 class MainApp(MDApp):
     dialog = None
@@ -33,48 +33,51 @@ class MainApp(MDApp):
             self.get_info()
 
     def get_info(self):
-        data = self.api.get_account("self")
-        if data.get_status() == "Error code":
-            self.root.current = "login"
-        elif data.get_status() == "Error connect":
-            self.root.current = "error_connect"
-        elif data.get_status() == "Ok":
-            data = data.get()
+        try:
+            data = self.api.get_account("self")
             self.root.ids.text_profile_1.text = f"id: {data['id']}\nЛогин: {data['username']}\nEmail: {data['email']}"
             self.root.ids.text_profile_2.text = f"Монеты: {data['money']}"
             self.root.ids.text_profile_3.text = f"Уровней пройдено {data['lvl']} из {data['lvls']}"
-            data = self.api.get_posts()
-            if data.get_status() == "Error code":
-                self.root.current = "login"
-            elif data.get_status() == "Error connect":
-                self.root.current = "error_connect"
-            else:
+            try:
+                data = self.api.get_posts()
                 self.root.current = "main"
-                #self.root.ids.box.clear_widgets()
-                for i in data.get():
+                for i in data:
                     self.root.ids.box.add_widget(
                         elements.OneLineListItemAligned(
-                            # text=f"[font=data/Neucha.ttf][size=50]{i['title']}[/size][/font]",
-                            text=f"[font=data/Neucha.ttf]{i['title']}[/font]",
-                            on_release=self.open_post)
-                    )
+                        # text=f"[font=data/Neucha.ttf][size=50]{i['title']}[/size][/font]",
+                        text=f"[font=data/Neucha.ttf]{i['title']}[/font]",
+                        on_release=self.open_post)
+                        )
+            except ConnectionError:
+                self.root.current = "error_connect"
+            except Exception:
+                self.root.current = "login"
+        except ConnectionError:
+            self.root.current = "error_connect"
+        except Exception:
+            self.root.current = "login"
 
     def check_connect(self):
         self.get_info()
 
     def load_post(self, name):
-        data = self.api.get_posts()
-        slug = ""
-        if data.get_status() == "Error code":
-            self.root.current = "login"
-        elif data.get_status() == "Error connect":
-            self.root.current = "error_connect"
-        elif data.get_status() == "Ok":
-            for i in data.get():
+        try:
+            data = self.api.get_posts()
+            slug = ""
+            for i in data:
                 if i['title'] == name:
                     slug = i['slug']
-            data = self.api.get_post(slug)
-            self.root.ids.post.text = data.get()["body"]
+            try:
+                data = self.api.get_post(slug)
+                self.root.ids.post.text = data["body"]
+            except ConnectionError:
+                self.root.current = "error_connect"
+            except Exception:
+                self.root.current = "login"
+        except ConnectionError:
+            self.root.current = "error_connect"
+        except Exception:
+            self.root.current = "login"
 
     def open_post(self, onelinelistitem):
         name = onelinelistitem.text[onelinelistitem.text.index(']') + 1:onelinelistitem.text.index('[', 1)]
@@ -83,36 +86,57 @@ class MainApp(MDApp):
         self.root.ids.post_name.title = name
         threading.Thread(target=self.load_post, args=(name,)).start()
 
+    def get_gift(self):
+        try:
+            data = self.api.get_gift()
+            if data == 1:
+                self.root.ids.text_gift.text = "Удачной игры! +1 монетка"
+                try:
+                    data = self.api.get_account("self")
+                    self.root.ids.text_profile_2.text = f"Монеты: {data['money']}"
+                except ConnectionError:
+                    self.root.current = "error_connect"
+                except Exception:
+                    self.root.current = "login"
+            elif data == 2:
+                self.root.ids.text_gift.text = "Повезло, получаешь пожелания хорошего дня"
+            else:
+                self.root.ids.text_gift.text = "Еще рано, подожди"
+        except ConnectionError:
+            self.root.current = "error_connect"
+        except Exception:
+            self.root.current = "login"
+
     def auth(self):
-        data = self.api.login(self.root.ids.user.text, self.root.ids.password.text)
-        if data.get_status() == "Ok":
+        try:
+            data = self.api.login(self.root.ids.user.text, self.root.ids.password.text)
             self.save()
             self.root.ids.welcome_label.text = "Успешно авторизовались"
-            data = self.api.get_account("self")
-            if data.get_status() != "Ok":
-                self.root.current = "login"
-            else:
-                data = data.get()
+            try:
+                data = self.api.get_account("self")
                 self.root.ids.text_profile_1.text = f"id: {data['id']}\nЛогин: {data['username']}\nEmail: {data['email']}"
                 self.root.ids.text_profile_2.text = f"Монеты: {data['money']}"
                 self.root.ids.text_profile_3.text = f"Уровней пройдено {data['lvl']} из {data['lvls']}"
-                data = self.api.get_posts()
-                if data.get_status() == "Error code":
-                    self.root.current = "login"
-                elif data.get_status() == "Error connect":
-                    self.root.current = "error_connect"
-                else:
+                try:
+                    data = self.api.get_posts()
                     self.root.current = "main"
-                    #self.root.ids.box.clear_widgets()
                     for i in data.get():
                         self.root.ids.box.add_widget(
                             elements.OneLineListItemAligned(
                                 text=f"[font=data/Neucha.ttf]{i['title']}[/font]",
                                 on_release=self.open_post)
                         )
-        elif data.get_status() == "Error connect":
+                except ConnectionError:
+                    self.root.current = "error_connect"
+                except Exception:
+                    self.root.current = "login"
+            except ConnectionError:
+                self.root.current = "login"
+            except Exception:
+                self.root.current = "login"
+        except ConnectionError:
             self.root.ids.welcome_label.text = "Нет соединения с сервером"
-        else:
+        except Exception:
             self.root.ids.welcome_label.text = "Ошибка авторизации"
         self.root.ids.spiner.active = False
 
@@ -147,7 +171,7 @@ class MainApp(MDApp):
                         ],
                     )
                 self.dialog.open()
-            return True
+        return True
 
     def to_exit(self, inst):
         self.stop()

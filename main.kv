@@ -125,6 +125,7 @@ ScreenManager:
                                 text_color: (.59, .7, .14, 1) if app.theme_cls.theme_style == "Dark" else (.48, .57, .11, 1)
                                 #pos_hint: {"center_y": 0}
                                 size_hint: 1, 1
+
                 MDBottomNavigationItem:
                     name: 'screen 5'
                     #text: 'Настройки'
@@ -138,6 +139,31 @@ ScreenManager:
                             orientation:'vertical'
                             #size_hint: 1, .45
                             pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+                            MDLabel:
+                                id: text_gift
+                                font_size: dp(25)
+                                font_name: 'data/Neucha.ttf'
+                                text: ''
+                                halign: 'center'
+                                theme_text_color: "Custom"
+                                text_color: (.59, .7, .14, 1) if app.theme_cls.theme_style == "Dark" else (.48, .57, .11, 1)
+                                #pos_hint: {"center_y": 0}
+                                size_hint: 1, 1
+
+                            MDRoundFlatButton:
+                                text: "Подарок"
+                                font_size: dp(22)
+                                font_name: 'data/Neucha.ttf'
+                                pos_hint: {"center_x": 0.5}
+                                on_press: app.get_gift()
+                                md_bg_color: (.59, .7, .14, 1) if app.theme_cls.theme_style == "Dark" else (.48, .57, .11, 1)
+                                text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Dark" else (1, 1, 1, 1)
+                                line_color: .48, .57, .11, 1
+
+                            Widget:
+                                size_hint_y: None
+                                height: dp(40)
 
                             MDRoundFlatButton:
                                 text: "Сменить тему"
@@ -165,7 +191,7 @@ ScreenManager:
 
                             Widget:
                                 size_hint_y: None
-                                height: dp(100)
+                                height: dp(70)
     Screen:
         name: 'login'
         MyMDCard:
